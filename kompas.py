@@ -1,28 +1,31 @@
 # buat kompas leecher
 # GITHUB VCS
 # buat testcase
-
+import datetime
 import nltk
 import string
 import re
 from urllib import request
 from bs4 import BeautifulSoup
-# import _pickle as pickle
+import _pickle as pickle
 from unidecode import unidecode
 
 
 class Kompas:
-    def token_saja(self, teks):
+    def token_saja(self, teks, no_punct=True):
         teksToken = nltk.word_tokenize(teks)
         teks = nltk.Text(teksToken)
         kecil = [w.lower() for w in teks]
         no_ascii = [self.remove_non_ascii(huruf) for huruf in kecil]
         nokompas = [w for w in no_ascii if w != "kompas.com"]
-        nopuncnonumber1 = [x for x in nokompas if not re.fullmatch('[' + string.punctuation + ']+', x)]
-        nopuncnonumber2 = [x for x in nopuncnonumber1 if not re.search(r'\d+', x)]
-        nopuncnonumber3 = [x for x in nopuncnonumber2 if not re.search(r'\=', x)]
-        nopuncnonumber = [x for x in nopuncnonumber3 if not re.search(r'\/', x)]
-        isi = "".join([" " + i for i in nopuncnonumber]).strip()
+        if no_punct:
+            nopuncnonumber1 = [x for x in nokompas if not re.fullmatch('[' + string.punctuation + ']+', x)]
+            nopuncnonumber2 = [x for x in nopuncnonumber1 if not re.search(r'\d+', x)]
+            nopuncnonumber3 = [x for x in nopuncnonumber2 if not re.search(r'\=', x)]
+            nopuncnonumber = [x for x in nopuncnonumber3 if not re.search(r'\/', x)]
+            isi = "".join([" " + i for i in nopuncnonumber]).strip()
+        else:
+            isi = "".join([" " + i for i in nokompas]).strip()
         return isi
 
     def get_content(self, url):
@@ -107,12 +110,49 @@ class Kompas:
             self.save_token(tokens, namafile)
         return tokens
 
+    def generate(self, basis, panjang):
+        base = basis
+        numdays = panjang
+        date_list = [base + datetime.timedelta(days=x) for x in range(0, numdays)]
+        listTanggal = []
+        for i in date_list:
+            listTanggal.append(str(i.year) + "-" + str(i.month).zfill(2) + "-" + str(i.day).zfill(2))
+        return listTanggal
+
+    def kompas_generate_index(self, tgl_mulai, panjang_hari):
+        daftarTgl = self.generate(tgl_mulai, panjang_hari)
+        daftar = []
+        for tanggal in daftarTgl:
+            dft = self.kompas_index(tanggal)
+            daftar = daftar + dft
+        return daftar
+
 
 if __name__ == "__main__":
+
+    interval = 5
+    hari = 50
+    tglDft = []
+    harinya = datetime.datetime(2014, 8, 1) + datetime.timedelta(days=101)
+    hitung = 0
     kompas = Kompas()
-    tanggal = "2015-04-21"
-    daftar = kompas.kompas_index(tanggal)
-    kompas.kompas_leech(daftar, "save.txt", True, True)
+    for i in range(hari // interval):
+        hitung += 1
+        print("interval :" + str(hitung) + " tanggal: " + harinya.strftime('%m/%d/%Y'))
+        daftar = kompas.kompas_generate_index(harinya, interval)
+        tglDft.append(daftar)
+        harinya = harinya + datetime.timedelta(days=interval)
+        f = open("pickle_daftar_index_kompas_sejak_2014_mei_100_hari" + ".pkl", 'wb')
+        pickle.dump(tglDft, f)
+        f.close()
+
+    count = 0
+    for i in tglDft:
+        count = count + 1
+        print("count ke :" + str(count))
+        # token_data = kompasLeech(i, "kompas_2014_agustus_10_" + str(count) + ".txt")
+        print(i)
+
 
 
 

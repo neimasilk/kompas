@@ -10,7 +10,7 @@ class TestKompas(TestCase):
         # output : (isi=string) dibersihkan semua tag html, punctuasi dan tanda baca.
 
         kompas = Kompas()
-        test_kata_aneh = '--Terbayang-bayang @amien -- "percobaan" —  "/a" link=abcd SdAC 1234 1/2/3 --'
+        test_kata_aneh = '--Terbayang-bayang. @amien -- "percobaan" —  "/a" link=abcd. SdAC 1234 1/2/3 --'
         hasil_kata_aneh = 'terbayang-bayang amien percobaan sdac'
         self.assertEqual(kompas.token_saja(test_kata_aneh), hasil_kata_aneh)
 
