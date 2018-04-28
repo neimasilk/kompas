@@ -47,17 +47,16 @@ import _pickle as pickle
 #         'Failed to verify ' + filename + '. Can you get to it with a browser?')
 #   return filename
 
-filename = "wikipedia.zip"
 
 # Read the data into a list of strings.
-f = open('wikipedia.txt', 'r')
+f = open('text8', 'r')
 data = tf.compat.as_str(f.read().split())
 
 words = data
 print('Data size', len(words))
 
 # Step 2: Build the dictionary and replace rare words with UNK token.
-vocabulary_size = 100000
+vocabulary_size = 50000
 
 
 def build_dataset(words, vocabulary_size):
