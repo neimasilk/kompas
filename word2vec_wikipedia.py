@@ -49,14 +49,14 @@ import _pickle as pickle
 
 
 # Read the data into a list of strings.
-f = open('text8', 'r')
-data = tf.compat.as_str(f.read().split())
+f = open('wikipedia.txt','rb')
+data = f.read().split()
 
 words = data
 print('Data size', len(words))
 
 # Step 2: Build the dictionary and replace rare words with UNK token.
-vocabulary_size = 50000
+vocabulary_size = 150000
 
 
 def build_dataset(words, vocabulary_size):
@@ -241,6 +241,9 @@ def plot_with_labels(low_dim_embs, labels, filename='tsne.png'):
 
     plt.savefig(filename)
 
+# Saving the objects:
+with open('data_count_dictionary_reverse.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+    pickle.dump([data, count, dictionary, reverse_dictionary, final_embeddings], f)
 
 try:
     from sklearn.manifold import TSNE
@@ -252,9 +255,6 @@ try:
     labels = [reverse_dictionary[i] for i in xrange(plot_only)]
     plot_with_labels(low_dim_embs, labels)
 
-    # Saving the objects:
-    with open('objs.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
-        pickle.dump([data, count, dictionary, reverse_dictionary, final_embeddings], f)
 
     # Getting back the objects:
 

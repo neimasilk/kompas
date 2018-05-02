@@ -17,13 +17,11 @@ import pickle
 
 
 data_index = 0
-with open('data_count_dictionary_reverse_dictionary.pkl','rb') as f:  # Python 3: open(..., 'rb')
-    data, count, dictionary, reverse_dictionary = pickle.load(f)
+with open('data_count_dictionary_reverse.pkl','rb') as f:  # Python 3: open(..., 'rb')
+    data, count, dictionary, reverse_dictionary, final_embeddings = pickle.load(f)
     f.close()
 
-with open('final_embeddings.pkl','rb') as f:  # Python 3: open(..., 'rb')
-    final_embeddings = pickle.load(f)
-    f.close()
+
 
 def plot_with_labels(low_dim_embs, labels, filename='tsne.png'):
   assert low_dim_embs.shape[0] >= len(labels), "More labels than embeddings"
@@ -38,7 +36,7 @@ def plot_with_labels(low_dim_embs, labels, filename='tsne.png'):
                  ha='right',
                  va='bottom')
 
-  plt.savefig(filename)
+  # plt.savefig(filename)
   plt.show()
 
 try:
