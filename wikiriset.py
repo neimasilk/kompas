@@ -55,73 +55,77 @@ def token_saja(teks,no_punct=True):
     else:
         isi = "".join([" " + i for i in no_ascii]).strip()
     return isi
-pathWikiXML = os.path.join(PATH_WIKI_XML, FILENAME_WIKI_ID)
-pathArticles = os.path.join(PATH_WIKI_XML, FILENAME_ARTICLES)
-pathArticlesRedirect = os.path.join(PATH_WIKI_XML, FILENAME_REDIRECT)
-pathTemplateRedirect = os.path.join(PATH_WIKI_XML, FILENAME_TEMPLATE)
 
-totalCount = 0
-articleCount = 0
-redirectCount = 0
-templateCount = 0
-title = None
-start_time = time.time()
-isi = ''
 
-for event, elem in etree.iterparse(pathWikiXML, events=('start', 'end')):
-    tname = strip_tag_name(elem.tag)
-    if event == 'start':
-        if tname == 'page':
-            title = ''
-            id = -1
-            redirect = ''
-            inrevision = False
-            ns = 0
-        elif tname == 'revision':
-            # Do not pick up on revision id's
-            inrevision = True
-    else:
-        if tname == 'title':
-            title = elem.text
-        elif tname == 'id' and not inrevision:
-            id = int(elem.text)
-        elif tname == 'redirect':
-            redirect = elem.attrib['title']
-        elif tname == 'ns':
-            ns = int(elem.text)
-        elif tname == 'text':
-            # if 88000 < id <89000:
-            # print(id)
-            teks = elem.text
-            pages = BS(str(teks), "html.parser")
-            isi_teks = token_saja(pages.text.strip())
-            print(isi_teks)
-            teks = ""
 
-        elif tname == 'page':
-            totalCount += 1
+if __name__ == '__main__':
+    pathWikiXML = os.path.join(PATH_WIKI_XML, FILENAME_WIKI_ID)
+    pathArticles = os.path.join(PATH_WIKI_XML, FILENAME_ARTICLES)
+    pathArticlesRedirect = os.path.join(PATH_WIKI_XML, FILENAME_REDIRECT)
+    pathTemplateRedirect = os.path.join(PATH_WIKI_XML, FILENAME_TEMPLATE)
 
-            if ns == 10:
-                templateCount += 1
-            elif len(redirect) > 0:
-                articleCount += 1
-            else:
-                redirectCount += 1
+    totalCount = 0
+    articleCount = 0
+    redirectCount = 0
+    templateCount = 0
+    title = None
+    start_time = time.time()
+    isi = ''
 
-            # if totalCount > 100000:
-            #  break
+    for event, elem in etree.iterparse(pathWikiXML, events=('start', 'end')):
+        tname = strip_tag_name(elem.tag)
+        if event == 'start':
+            if tname == 'page':
+                title = ''
+                id = -1
+                redirect = ''
+                inrevision = False
+                ns = 0
+            elif tname == 'revision':
+                # Do not pick up on revision id's
+                inrevision = True
+        else:
+            if tname == 'title':
+                title = elem.text
+            elif tname == 'id' and not inrevision:
+                id = int(elem.text)
+            elif tname == 'redirect':
+                redirect = elem.attrib['title']
+            elif tname == 'ns':
+                ns = int(elem.text)
+            elif tname == 'text':
+                # if 88000 < id <89000:
+                # print(id)
+                teks = elem.text
+                pages = BS(str(teks), "html.parser")
+                isi_teks = token_saja(pages.text.strip())
+                print(isi_teks)
+                teks = ""
 
-            # if totalCount > 1 and (totalCount % 100000) == 0:
-            #     print("{:,}".format(totalCount))
+            elif tname == 'page':
+                totalCount += 1
 
-        elem.clear()
-#
-# saveFile = open('wikipedia.txt', 'w')
-# saveFile.write(isi)
-# saveFile.close()
+                if ns == 10:
+                    templateCount += 1
+                elif len(redirect) > 0:
+                    articleCount += 1
+                else:
+                    redirectCount += 1
 
-# soup = BS(open(pathWikiXML).read(), "xml")
+                # if totalCount > 100000:
+                #  break
 
-# pages = 'berkas dna structure+key+labelled.pn heliks ganda dna atom -atom pada struktur tersebut diwarnai sesuai dengan unsur kimia nya dan struktur detail dua pasangan basa ditunjukkan oleh gambar kanan bawah berkas adn animation.gif|jmpl|gambaran tiga dimensi'
-# print(token_saja(pages.text.strip()))
-# print(pages.text.strip())
+                # if totalCount > 1 and (totalCount % 100000) == 0:
+                #     print("{:,}".format(totalCount))
+
+            elem.clear()
+    #
+    # saveFile = open('wikipedia.txt', 'w')
+    # saveFile.write(isi)
+    # saveFile.close()
+
+    # soup = BS(open(pathWikiXML).read(), "xml")
+
+    # pages = 'berkas dna structure+key+labelled.pn heliks ganda dna atom -atom pada struktur tersebut diwarnai sesuai dengan unsur kimia nya dan struktur detail dua pasangan basa ditunjukkan oleh gambar kanan bawah berkas adn animation.gif|jmpl|gambaran tiga dimensi'
+    # print(token_saja(pages.text.strip()))
+    # print(pages.text.strip())
