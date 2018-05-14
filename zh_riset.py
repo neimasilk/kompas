@@ -2,6 +2,10 @@
 from stanfordcorenlp import StanfordCoreNLP
 
 
+# some python file
+import textract
+text = textract.process("path/to/file.extension")
+
 sentence = "是北加州围绕旧金山湾和圣帕布罗湾河口的一片城市群"
 with StanfordCoreNLP(r'C:/Users/amien_lab/PycharmProjects/kompas',lang='zh') as nlp:
     print(nlp.word_tokenize(sentence))
