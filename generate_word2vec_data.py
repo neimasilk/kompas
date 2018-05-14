@@ -28,7 +28,7 @@ def generate_list(tabel, ukuran, max_count):
         # select limit 1 offset acak
         # ambil id dan ukuran_data
         daftar_id.append(id_nya)
-        toks = dokumen.encode().decode('utf-8', 'surrogateescape')
+        toks = dokumen.encode('utf-8', 'replace').decode('utf-8')
         a = a + (token_saja(toks, False) if tabel == 'wiki_id' else token_saja(toks, True))
         ukur = ukur + ukuran_data
         indeks = indeks+1
@@ -115,20 +115,28 @@ if __name__ == '__main__':
 
 
 
-    # b = generate_word2vec_data('wiki_id',3500)
-    # saveFile = open('wikipedia_id.txt', 'w')
-    # saveFile.write(b)
-    # saveFile.close()
 
     b = generate_word2vec_data('wiki_zh',350000000)
-    f = open("pikle_word2vec" + ".pkl", 'wb')
+    f = open("pikle_word2vec_zh" + ".pkl", 'wb')
     pickle.dump(b, f)
     f.close()
+    try:
+        saveFile = open('wikipedia_zh.txt', 'w')
+        saveFile.write(b)
+        saveFile.close()
+    except:
+        pass
 
-    saveFile = open('wikipedia_zh.txt', 'wb')
-    saveFile.write(b)
-    saveFile.close()
-
+    b = generate_word2vec_data('wiki_id',350000000)
+    f = open("pikle_word2vec_id" + ".pkl", 'wb')
+    pickle.dump(b, f)
+    f.close()
+    try:
+        saveFile = open('wikipedia_id.txt', 'w')
+        saveFile.write(b)
+        saveFile.close()
+    except:
+        pass
     # print(total_wiki_id())
     # print(total_wiki_zh())
 
