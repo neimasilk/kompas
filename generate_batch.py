@@ -1,5 +1,5 @@
 # generate_batch adalah step ke 3 untuk model skip-gram di word vector untuk mempermudah proses.
-# bisa dijalankan kalau step 1 dan 2 selesais
+# bisa dijalankan kalau step 1 dan 2 selesai
 
 from __future__ import absolute_import
 from __future__ import division
