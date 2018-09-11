@@ -40,7 +40,7 @@ def input_data(namafile):
         try:
             c.execute("INSERT INTO wiki_id(situs, judul, dokumen, ukuran) VALUES (?,?,?,?)",(situs,judul,dokumen,ukuran))
         except sqlite3.IntegrityError:
-            print('ERROR: ID already exists in PRIMARY KEY column {}'.format(id_column))
+            print('ERROR: ID already exists in PRIMARY KEY column {}')
 
 
 for root, subdirs, files in os.walk(root_dir):
