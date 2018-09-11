@@ -1,3 +1,4 @@
+# Menggenerate dataset wordvector dari database sqlite /home/mukhlis/machine_learning_nlp
 from bs4 import BeautifulSoup as bs
 import sqlite3
 import os

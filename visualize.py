@@ -1,4 +1,4 @@
-
+# visualisasi yang ke 4, sebelum 1 generate dataset, 2 generate batch, 3 generate word2vec
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
