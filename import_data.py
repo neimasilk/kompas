@@ -3,13 +3,18 @@ from bs4 import BeautifulSoup as bs
 import sqlite3
 import os
 
-root_dir= '/home/mukhlis/wiki_txt/zhwiki'
+root_dir= '/home/mukhlis/wiki_txt/idwiki'
 sqlite_file = '/home/mukhlis/machine_learning_nlp'
-table_name = 'wiki_zh'
+table_name = 'wiki_id'
 conn = sqlite3.connect(sqlite_file)
 c = conn.cursor()
-c.execute('DELETE FROM {ft_tablename}'.format(ft_tablename=table_name))
-c.execute('VACUUM ')
+c.execute('drop table if exists {ft_tablename}'.format(ft_tablename=table_name))
+c.execute('CREATE TABLE "{ft_tablename}" (	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,'
+                                      '`judul` TEXT,'
+                                      '    `dokumen`	TEXT,'
+                                      '	`situs`	TEXT,'
+                                      '	`ukuran`	INTEGER'
+                                      '        )   '.format(ft_tablename=table_name))
 
 
 def buka_file_teks(namafile):
@@ -33,7 +38,7 @@ def input_data(namafile):
         ukuran = len(dokumen)
         # print(perintah)
         try:
-            c.execute("INSERT INTO wiki_zh(situs, judul, dokumen, ukuran) VALUES (?,?,?,?)",(situs,judul,dokumen,ukuran))
+            c.execute("INSERT INTO wiki_id(situs, judul, dokumen, ukuran) VALUES (?,?,?,?)",(situs,judul,dokumen,ukuran))
         except sqlite3.IntegrityError:
             print('ERROR: ID already exists in PRIMARY KEY column {}'.format(id_column))
 
