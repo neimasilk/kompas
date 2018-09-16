@@ -15,6 +15,10 @@ import tensorflow as tf
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
 import pickle
+import matplotlib
+# matplotlib.use("agg")
+from matplotlib import font_manager
+from pathlib import Path
 
 
 data_index = 0
@@ -23,6 +27,10 @@ with open('data_count_dictionary_reverse.pkl','rb') as f:  # Python 3: open(...,
     f.close()
 
 def plot_with_labels(low_dim_embs, labels, filename='tsne.png'):
+
+    font_p = font_manager.FontProperties(fname='simhei.ttf')
+    # font_p.set_family('SimHei')
+    font_p.set_size(14)
     assert low_dim_embs.shape[0] >= len(labels), "More labels than embeddings"
     plt.figure(figsize=(18, 18))  # in inches
     for i, label in enumerate(labels):
@@ -33,7 +41,7 @@ def plot_with_labels(low_dim_embs, labels, filename='tsne.png'):
                      xytext=(5, 2),
                      textcoords='offset points',
                      ha='right',
-                     va='bottom')
+                     va='bottom', fontproperties=font_p)
 
     # plt.savefig(filename)
     plt.show()

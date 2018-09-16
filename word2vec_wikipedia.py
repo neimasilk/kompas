@@ -49,7 +49,7 @@ import _pickle as pickle
 
 
 # Read the data into a list of strings.
-f = open('wikipedia.txt','rb')
+f = open('wikipedia_zh.txt','rb')
 data = f.read().split()
 
 words = data
@@ -182,8 +182,8 @@ with graph.as_default():
     init = tf.global_variables_initializer()
 
 # Step 5: Begin training.
-num_steps = 100001
-# num_steps = 2000001
+# num_steps = 100001
+num_steps = 2000001
 
 with tf.Session(graph=graph) as session:
     # We must initialize all variables before we use them.
@@ -242,7 +242,7 @@ def plot_with_labels(low_dim_embs, labels, filename='tsne.png'):
     plt.savefig(filename)
 
 # Saving the objects:
-with open('data_count_dictionary_reverse.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+with open('data_count_dictionary_reverse_wikipedia_zh.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([data, count, dictionary, reverse_dictionary, final_embeddings], f)
 
 try:
