@@ -49,7 +49,7 @@ import _pickle as pickle
 
 
 # Read the data into a list of strings.
-f = open('wikipedia.txt','rb')
+f = open('wikipedia_zh.txt','rb')
 data = f.read().split()
 
 words = data
@@ -124,7 +124,7 @@ for i in range(8):
 
 batch_size = 128
 embedding_size = 128  # Dimension of the embedding vector.
-skip_window = 1  # How many words to consider left and right.
+skip_window = 3  # How many words to consider left and right.
 num_skips = 2  # How many times to reuse an input to generate a label.
 
 # We pick a random validation set to sample nearest neighbors. Here we limit the
@@ -182,8 +182,8 @@ with graph.as_default():
     init = tf.global_variables_initializer()
 
 # Step 5: Begin training.
-num_steps = 100001
-# num_steps = 2000001
+# num_steps = 100001
+num_steps = 2000001
 
 with tf.Session(graph=graph) as session:
     # We must initialize all variables before we use them.
@@ -242,7 +242,7 @@ def plot_with_labels(low_dim_embs, labels, filename='tsne.png'):
     plt.savefig(filename)
 
 # Saving the objects:
-with open('data_count_dictionary_reverse.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+with open('data_count_dictionary_reverse_wikipedia_zh.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([data, count, dictionary, reverse_dictionary, final_embeddings], f)
 
 try:
@@ -253,8 +253,8 @@ try:
     plot_only = 500
     low_dim_embs = tsne.fit_transform(final_embeddings[:plot_only, :])
     labels = [reverse_dictionary[i] for i in xrange(plot_only)]
-    plot_with_labels(low_dim_embs, labels)
-
+    label = [tf.compat.as_str(i) for i in labels]
+    plot_with_labels(low_dim_embs, label)
 
     # Getting back the objects:
 
