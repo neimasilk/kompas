@@ -140,6 +140,7 @@ if __name__ == '__main__':
         pass
     # print(total_wiki_id())
     # print(total_wiki_zh())
+    # tes 1 2 3
 
 
 
